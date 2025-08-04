@@ -1,0 +1,24 @@
+# H-Net Dynamic Chunking Requirements
+
+# Core dependencies
+numpy>=1.21.0
+scipy>=1.7.0
+scikit-learn>=1.0.0
+pandas>=1.3.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+nltk>=3.6.0
+
+# Interactive visualizations
+pyecharts>=1.9.0
+
+# Optional: Advanced embeddings (for better performance)
+torch>=1.9.0
+transformers>=4.10.0
+
+# Development and testing
+jupyter>=1.0.0
+notebook>=6.4.0
+
+# Data processing utilities
+tqdm>=4.62.0
