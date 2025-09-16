@@ -1,0 +1,112 @@
+# Default Configuration for Dynamic ChunkingHNet
+# This file contains the default settings for the H-Net dynamic chunking pipeline
+
+# General Pipeline Settings
+pipeline:
+  compression_ratio: 6.0          # Target compression ratio (tokens per chunk)
+  embedding_dim: 384              # Dimension of embeddings
+  device: "cpu"                   # Device for computations ('cpu' or 'cuda')
+  cache_embeddings: true          # Whether to cache computed embeddings
+
+# Boundary Detection Settings  
+boundary_detection:
+  embedding_model: null           # Name of embedding model (null for TF-IDF fallback)
+  threshold_mode: "adaptive"      # Threshold selection mode ('adaptive' or 'fixed')
+  fixed_threshold: 0.5           # Fixed threshold value (used if threshold_mode is 'fixed')
+  min_threshold: 0.1             # Minimum threshold to prevent excessive boundaries
+  
+# Routing Module Settings
+routing:
+  target_compression_ratio: 6.0   # Target compression ratio for routing module
+  enable_ratio_loss: true        # Whether to calculate ratio loss
+  
+# Smoothing Module Settings
+smoothing:
+  alpha: 0.7                     # Default smoothing factor for EMA
+  use_confidence_weighting: true  # Whether to use boundary probabilities as weights
+  noise_threshold: 0.3           # Threshold for adaptive smoothing
+  
+# Caching Settings
+caching:
+  enabled: true                  # Whether to enable caching
+  max_embedding_cache_size: 1000 # Maximum number of cached embeddings
+  max_memory_mb: 100.0           # Maximum memory usage for embedding cache (MB)
+  max_boundary_cache_size: 500   # Maximum number of cached boundary calculations
+  cache_dir: null                # Directory for persistent cache (null = no persistence)
+  enable_persistence: false      # Whether to persist cache to disk
+  
+# Evaluation Settings
+evaluation:
+  compute_metrics: true          # Whether to compute quality metrics by default
+  metrics_to_compute:            # List of metrics to compute
+    - "semantic_boundary_score"
+    - "chunk_coherence_score"
+    - "compression_ratio"
+    - "boundary_precision_score"
+  include_boundary_precision: true # Whether to include boundary precision scoring
+  
+# Text Processing Settings
+text_processing:
+  min_tokens_per_text: 2         # Minimum tokens required for processing
+  max_sequence_length: 512       # Maximum sequence length for transformer models
+  sentence_tokenizer: "punkt"    # NLTK sentence tokenizer to use
+  
+# Logging Settings
+logging:
+  level: "INFO"                  # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  enable_file_logging: false     # Whether to log to file
+  log_file: "dynamic_chunking.log" # Log file path (if file logging enabled)
+  
+# Performance Settings
+performance:
+  enable_batch_processing: true  # Whether to enable batch processing
+  batch_size: 32                 # Default batch size for processing
+  enable_parallel_processing: false # Whether to enable parallel processing
+  max_workers: 4                 # Maximum number of worker threads/processes
+  memory_limit_mb: 1000         # Memory limit for processing (MB)
+  
+# Model Settings
+models:
+  default_embedding_model: null  # Default embedding model name
+  embedding_models:              # Available embedding models configuration
+    tfidf:
+      type: "tfidf"
+      max_features: 384
+      ngram_range: [1, 2]
+      stop_words: null
+    # Example transformer model configuration
+    # sentence_transformers:
+    #   type: "sentence_transformers"  
+    #   model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    #   device: "cpu"
+    
+# Visualization Settings (for interactive features)
+visualization:
+  enable_interactive: true       # Whether to enable interactive visualizations
+  theme: "default"              # Visualization theme
+  figure_size: [12, 8]          # Default figure size for plots
+  save_plots: false             # Whether to save plots automatically
+  plots_dir: "plots"            # Directory to save plots
+  
+# Experimental Settings (for advanced features)
+experimental:
+  enable_attention_detection: false    # Whether to use attention-based boundary detection
+  enable_multilingual: false          # Whether to enable multilingual support
+  enable_streaming: false             # Whether to enable streaming processing
+  attention_num_heads: 8              # Number of attention heads
+  attention_dropout: 0.1              # Attention dropout rate
+  
+# Language-specific Settings (for multilingual support)
+languages:
+  default_language: "en"         # Default language
+  supported_languages:           # Supported languages configuration
+    en:
+      sentence_tokenizer: "punkt"
+      embedding_model: null
+    # es:
+    #   sentence_tokenizer: "punkt"  
+    #   embedding_model: "spanish_model"
+    # zh:
+    #   sentence_tokenizer: "zh_core_web_sm"
+    #   embedding_model: "chinese_model"
